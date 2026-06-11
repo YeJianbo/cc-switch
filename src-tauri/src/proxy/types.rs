@@ -322,6 +322,9 @@ pub struct CopilotOptimizerConfig {
     /// 重试，那时第一次请求已经消耗了一次 premium quota。主动剥离避免这次浪费。
     #[serde(default = "default_true")]
     pub strip_thinking: bool,
+    /// 屏蔽 image 请求（过滤掉 image_generation 工具）
+    #[serde(default = "default_true")]
+    pub disable_image_generation: bool,
 }
 
 fn default_warmup_model() -> String {
@@ -340,6 +343,7 @@ impl Default for CopilotOptimizerConfig {
             warmup_downgrade: true,
             warmup_model: "gpt-5-mini".to_string(),
             strip_thinking: true,
+            disable_image_generation: true,
         }
     }
 }

@@ -670,6 +670,8 @@
     "codexAuth": "Codex App Enhancements",
     "preserveCodexOfficialAuthOnSwitch": "Keep official login when switching third-party providers",
     "preserveCodexOfficialAuthOnSwitchDescription": "When enabled, you can use the Codex app's official plugins, mobile remote control, and other features while using third-party APIs.",
+    "disableImageGeneration": "Disable Image Generation Request",
+    "disableImageGenerationDescription": "Filter out the image_generation tool automatically injected by the Codex client, preventing 403 Forbidden errors when using upstream providers (like OneAPI, OpenRouter) that do not support DALL-E.",
     "appVisibility": {
       "title": "Homepage Display",
       "description": "Choose which apps to show on the homepage",

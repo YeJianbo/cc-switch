@@ -670,6 +670,8 @@
     "codexAuth": "Codex 应用增强",
     "preserveCodexOfficialAuthOnSwitch": "切换第三方时保留官方登录",
     "preserveCodexOfficialAuthOnSwitchDescription": "开启后可以在使用第三方 API 的时候使用 Codex 应用的官方插件、手机远程操作等功能",
+    "disableImageGeneration": "屏蔽图片生成请求",
+    "disableImageGenerationDescription": "屏蔽 Codex 客户端自动注入的图片生成工具，防止部分不支持 DALL-E 的第三方渠道（如 OneAPI、OpenRouter 等）报错中断",
     "appVisibility": {
       "title": "主页面显示",
       "description": "选择在主页面显示的应用",

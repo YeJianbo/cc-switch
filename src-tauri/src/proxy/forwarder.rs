@@ -1344,6 +1344,16 @@ impl RequestForwarder {
         // 转换请求体（如果需要）
         let mut request_body = if codex_responses_to_chat {
             let mut mapped_body = mapped_body;
+            if self.copilot_optimizer_config.disable_image_generation {
+                if let Some(tools) = mapped_body.get_mut("tools").and_then(|t| t.as_array_mut()) {
+                    tools.retain(|tool| !is_image_generation_tool(tool));
+                }
+                if let Some(tool_choice) = mapped_body.get_mut("tool_choice") {
+                    if is_image_generation_tool_choice(tool_choice) {
+                        mapped_body.as_object_mut().unwrap().remove("tool_choice");
+                    }
+                }
+            }
             let restored = self
                 .codex_chat_history
                 .enrich_request(&mut mapped_body)
@@ -1381,6 +1391,16 @@ impl RequestForwarder {
         };
 
         if matches!(app_type, AppType::Codex) {
+            if self.copilot_optimizer_config.disable_image_generation {
+                if let Some(tools) = request_body.get_mut("tools").and_then(|t| t.as_array_mut()) {
+                    tools.retain(|tool| !is_image_generation_tool(tool));
+                }
+                if let Some(tool_choice) = request_body.get_mut("tool_choice") {
+                    if is_image_generation_tool_choice(tool_choice) {
+                        request_body.as_object_mut().unwrap().remove("tool_choice");
+                    }
+                }
+            }
             self.apply_media_prevention(&mut request_body, provider);
         }
 
@@ -2601,6 +2621,48 @@ fn value_for_log(value: &Value) -> String {
         Value::Array(values) => format!("array(len={})", values.len()),
         Value::Object(values) => format!("object(len={})", values.len()),
     }
+}
+
+fn is_image_generation_tool(tool: &serde_json::Value) -> bool {
+    if let Some(t) = tool.get("type").and_then(|v| v.as_str()) {
+        if t == "image_generation" {
+            return true;
+        }
+    }
+    if let Some(name) = tool.get("name").and_then(|v| v.as_str()) {
+        if name == "image_generation" {
+            return true;
+        }
+    }
+    if let Some(function) = tool.get("function") {
+        if let Some(name) = function.get("name").and_then(|v| v.as_str()) {
+            if name == "image_generation" {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+fn is_image_generation_tool_choice(tool_choice: &serde_json::Value) -> bool {
+    if let Some(name) = tool_choice.get("name").and_then(|v| v.as_str()) {
+        if name == "image_generation" {
+            return true;
+        }
+    }
+    if let Some(t) = tool_choice.get("type").and_then(|v| v.as_str()) {
+        if t == "image_generation" {
+            return true;
+        }
+    }
+    if let Some(function) = tool_choice.get("function") {
+        if let Some(name) = function.get("name").and_then(|v| v.as_str()) {
+            if name == "image_generation" {
+                return true;
+            }
+        }
+    }
+    false
 }
 
 #[cfg(test)]

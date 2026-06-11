@@ -670,6 +670,8 @@
     "codexAuth": "Codex アプリ拡張",
     "preserveCodexOfficialAuthOnSwitch": "サードパーティ切替時に公式ログインを保持",
     "preserveCodexOfficialAuthOnSwitchDescription": "オンにすると、サードパーティ API を使用する際に Codex アプリの公式プラグインやスマホからのリモート操作などの機能を利用できます。",
+    "disableImageGeneration": "画像生成リクエストを無効化",
+    "disableImageGenerationDescription": "Codexクライアントが自動挿入するimage_generationツールを削除し、DALL-E非対応のサードパーティAPIで403エラーが発生するのを防ぎます",
     "appVisibility": {
       "title": "ホームページ表示",
       "description": "ホームページに表示するアプリを選択",
