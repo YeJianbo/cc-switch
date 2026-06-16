@@ -693,6 +693,8 @@
     "disableImageGenerationDescription": "屏蔽 Codex 客戶端自動注入的圖片生成工具，防止部分不支援 DALL-E 的第三方管道（如 OneAPI、OpenRouter 等）報錯中斷",
     "unifyCodexSessionHistory": "統一 Codex 會話歷史",
     "unifyCodexSessionHistoryDescription": "開啟後，官方訂閱將以共享的 custom 供應商標識執行，官方與第三方會話出現在同一歷史清單中，並可選擇把現有官方會話一併遷入（遷移前自動備份）。關閉開關時可按備份恢復遷入的會話。注意：跨供應商繼續舊會話時，對方後端可能無法解密會話中的 encrypted_content 推理內容，導致繼續失敗",
+    "autoCleanCodexDbOnSwitch": "切換時自動清理無用會話",
+    "autoCleanCodexDbOnSwitchDescription": "切換 Codex 供應商或者關閉本地路由模式時，自動清理 Codex 資料庫中的無用會話及快取日誌，防止 SQLite 資料庫過大導致卡頓（清理前會自動備份以供恢復）。",
     "unifyCodexHistoryRestoreCompleted": "已按備份還原官方會話歷史（{{files}} 個會話檔案、{{rows}} 條索引記錄）",
     "unifyCodexHistoryRestoreFailed": "還原官方會話歷史失敗，請重試",
     "unifyCodexHistoryRestoreNothing": "目前 Codex 目錄沒有可恢復的遷移備份",

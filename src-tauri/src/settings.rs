@@ -381,6 +381,9 @@ pub struct AppSettings {
     /// providers. Opt-in: defaults to false.
     #[serde(default)]
     pub unify_codex_session_history: bool,
+    /// 切换 Codex Provider 时自动清理历史会话缓存（当 config.toml 发生实质性改变时触发）
+    #[serde(default)]
+    pub auto_clean_codex_db_on_switch: bool,
     /// User opted in (via the enable dialog checkbox) to migrate existing
     /// official sessions ("openai" bucket) into the shared bucket. Persisted so
     /// a failed migration retries at startup; cleared when the toggle turns off.
@@ -505,6 +508,7 @@ impl Default for AppSettings {
             enable_failover_toggle: false,
             preserve_codex_official_auth_on_switch: false,
             unify_codex_session_history: false,
+            auto_clean_codex_db_on_switch: false,
             unify_codex_migrate_existing: None,
             failover_confirmed: None,
             first_run_notice_confirmed: None,

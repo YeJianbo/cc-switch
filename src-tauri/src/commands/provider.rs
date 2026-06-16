@@ -87,7 +87,29 @@ fn switch_provider_internal(
     app_type: AppType,
     id: &str,
 ) -> Result<SwitchResult, AppError> {
-    ProviderService::switch(state, app_type, id)
+    let mut old_config_content = String::new();
+    let codex_config_path = crate::codex_config::get_codex_config_dir().join("config.toml");
+    
+    if app_type == AppType::Codex {
+        old_config_content = std::fs::read_to_string(&codex_config_path).unwrap_or_default();
+    }
+
+    let result = ProviderService::switch(state, app_type.clone(), id);
+
+    if result.is_ok() && app_type == AppType::Codex {
+        let settings = crate::settings::get_settings();
+        if settings.auto_clean_codex_db_on_switch {
+            let new_config_content = std::fs::read_to_string(&codex_config_path).unwrap_or_default();
+            if old_config_content != new_config_content {
+                log::info!("Codex config.toml changed during provider switch. Triggering auto database clean.");
+                tokio::task::spawn_blocking(|| {
+                    crate::commands::codex_cleaner::clean_codex_database_internal();
+                });
+            }
+        }
+    }
+    
+    result
 }
 
 #[cfg_attr(not(feature = "test-hooks"), doc(hidden))]

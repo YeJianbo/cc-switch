@@ -693,6 +693,8 @@
     "disableImageGenerationDescription": "Filter out the image_generation tool automatically injected by the Codex client, preventing 403 Forbidden errors when using upstream providers (like OneAPI, OpenRouter) that do not support DALL-E.",
     "unifyCodexSessionHistory": "Unified Codex session history",
     "unifyCodexSessionHistoryDescription": "When enabled, the official subscription runs under the shared \"custom\" provider id so official and third-party sessions appear in one history list, optionally migrating existing official sessions in (backed up first). When turning it off, the migrated sessions can be restored from backup. Note: resuming an old session across providers may fail because its encrypted_content reasoning can only be decrypted by the backend that created it.",
+    "autoCleanCodexDbOnSwitch": "Auto-clean unused sessions on switch",
+    "autoCleanCodexDbOnSwitchDescription": "Automatically clean useless sessions and log caches in the Codex database when switching Codex providers or disabling proxy mode, preventing lag from oversized SQLite databases (a backup is made before cleaning).",
     "unifyCodexHistoryRestoreCompleted": "Official session history restored from backup ({{files}} session files, {{rows}} index rows)",
     "unifyCodexHistoryRestoreFailed": "Failed to restore official session history, please try again",
     "unifyCodexHistoryRestoreNothing": "No restorable migration backup for the current Codex directory",

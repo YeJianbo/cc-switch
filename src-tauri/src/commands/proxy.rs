@@ -36,7 +36,25 @@ pub async fn stop_proxy_server(state: tauri::State<'_, AppState>) -> Result<(), 
 /// 停止代理服务器（恢复 Live 配置）
 #[tauri::command]
 pub async fn stop_proxy_with_restore(state: tauri::State<'_, AppState>) -> Result<(), String> {
-    state.proxy_service.stop_with_restore().await
+    let codex_config_path = crate::codex_config::get_codex_config_dir().join("config.toml");
+    let old_config_content = std::fs::read_to_string(&codex_config_path).unwrap_or_default();
+
+    let result = state.proxy_service.stop_with_restore().await;
+
+    if result.is_ok() {
+        let settings = crate::settings::get_settings();
+        if settings.auto_clean_codex_db_on_switch {
+            let new_config_content = std::fs::read_to_string(&codex_config_path).unwrap_or_default();
+            if old_config_content != new_config_content {
+                log::info!("Codex config.toml changed after stopping proxy with restore. Triggering auto database clean.");
+                tokio::task::spawn_blocking(|| {
+                    crate::commands::codex_cleaner::clean_codex_database_internal();
+                });
+            }
+        }
+    }
+
+    result
 }
 
 /// 获取各应用接管状态
@@ -54,10 +72,33 @@ pub async fn set_proxy_takeover_for_app(
     app_type: String,
     enabled: bool,
 ) -> Result<(), String> {
-    state
+    let mut old_config_content = String::new();
+    let is_codex = app_type == "codex";
+    let codex_config_path = crate::codex_config::get_codex_config_dir().join("config.toml");
+
+    if is_codex && !enabled {
+        old_config_content = std::fs::read_to_string(&codex_config_path).unwrap_or_default();
+    }
+
+    let result = state
         .proxy_service
         .set_takeover_for_app(&app_type, enabled)
-        .await
+        .await;
+
+    if result.is_ok() && is_codex && !enabled {
+        let settings = crate::settings::get_settings();
+        if settings.auto_clean_codex_db_on_switch {
+            let new_config_content = std::fs::read_to_string(&codex_config_path).unwrap_or_default();
+            if old_config_content != new_config_content {
+                log::info!("Codex config.toml changed after disabling proxy takeover. Triggering auto database clean.");
+                tokio::task::spawn_blocking(|| {
+                    crate::commands::codex_cleaner::clean_codex_database_internal();
+                });
+            }
+        }
+    }
+
+    result
 }
 
 /// 获取代理服务器状态

@@ -693,6 +693,8 @@
     "disableImageGenerationDescription": "Codexクライアントが自動挿入するimage_generationツールを削除し、DALL-E非対応のサードパーティAPIで403エラーが発生するのを防ぎます",
     "unifyCodexSessionHistory": "Codex セッション履歴を統一",
     "unifyCodexSessionHistoryDescription": "オンにすると、公式サブスクリプションも共有の custom プロバイダー ID で動作し、公式とサードパーティのセッションが同じ履歴リストに表示されます。既存の公式セッションの移行も選択できます（移行前に自動バックアップ）。オフにする際はバックアップから復元できます。注意：プロバイダーをまたいで古いセッションを再開すると、encrypted_content の推論内容を相手のバックエンドが復号できず、再開に失敗する場合があります。",
+    "autoCleanCodexDbOnSwitch": "切り替え時に無用なセッションを自動クリーンアップ",
+    "autoCleanCodexDbOnSwitchDescription": "Codex プロバイダーを切り替えたり、ローカルルーティングモードをオフにしたりする際、Codex データベース内の無用なセッションとキャッシュログを自動的にクリーンアップし、SQLite データベースの肥大化による遅延を防ぎます（クリーンアップ前に自動バックアップされます）。",
     "unifyCodexHistoryRestoreCompleted": "バックアップから公式セッション履歴を復元しました（セッションファイル {{files}} 件、インデックス {{rows}} 行）",
     "unifyCodexHistoryRestoreFailed": "公式セッション履歴の復元に失敗しました。もう一度お試しください",
     "unifyCodexHistoryRestoreNothing": "現在の Codex ディレクトリに復元可能な移行バックアップはありません",

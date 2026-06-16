@@ -173,6 +173,16 @@ export function CodexAuthSettings({
         onCheckedChange={handleUnifyHistoryChange}
       />
 
+      <ToggleRow
+        icon={<Database className="h-4 w-4 text-orange-500" />}
+        title={t("settings.autoCleanCodexDbOnSwitch")}
+        description={t("settings.autoCleanCodexDbOnSwitchDescription")}
+        checked={settings.autoCleanCodexDbOnSwitch ?? false}
+        onCheckedChange={(value) =>
+          onChange({ autoCleanCodexDbOnSwitch: value })
+        }
+      />
+
       <div className="flex items-center justify-between p-3 border rounded-lg bg-card/50">
         <div className="flex items-center gap-3">
           <Database className="h-4 w-4 text-orange-500" />
