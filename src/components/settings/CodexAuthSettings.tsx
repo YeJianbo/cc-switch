@@ -183,14 +183,16 @@ export function CodexAuthSettings({
         }
       />
 
-      <div className="flex items-center justify-between p-3 border rounded-lg bg-card/50">
+      <div className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card/50 p-4 transition-colors hover:bg-muted/50">
         <div className="flex items-center gap-3">
-          <Database className="h-4 w-4 text-orange-500" />
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background ring-1 ring-border">
+            <Database className="h-4 w-4 text-orange-500" />
+          </div>
           <div className="space-y-1">
             <p className="text-sm font-medium leading-none">
               {t("settings.codexCleanDatabase")}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {t("settings.codexCleanDatabaseDescription")}
             </p>
           </div>

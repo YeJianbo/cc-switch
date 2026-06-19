@@ -5279,3 +5279,33 @@ mod tests {
         );
     }
 }
+
+#[tauri::command]
+pub async fn restart_codex() -> Result<bool, String> {
+    #[cfg(target_os = "windows")]
+    {
+        use std::process::Command;
+        use std::os::windows::process::CommandExt;
+        const CREATE_NO_WINDOW: u32 = 0x08000000;
+        
+        let _ = Command::new("taskkill")
+            .args(["/F", "/IM", "codex.exe"])
+            .creation_flags(CREATE_NO_WINDOW)
+            .output();
+            
+        let _ = Command::new("wmic")
+            .args(["process", "where", "CommandLine like '%@openai/codex%' or CommandLine like '%\\codex %'", "call", "terminate"])
+            .creation_flags(CREATE_NO_WINDOW)
+            .output();
+            
+        Ok(true)
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        use std::process::Command;
+        let _ = Command::new("pkill")
+            .args(["-f", "codex"])
+            .output();
+        Ok(true)
+    }
+}
